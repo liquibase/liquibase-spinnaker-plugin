@@ -1,0 +1,43 @@
+buildscript {
+  repositories {
+    mavenCentral()
+  }
+  dependencies {
+  }
+}
+
+plugins {
+  id("io.spinnaker.plugin.bundler").version("$spinnakerGradleVersion")
+  id("com.palantir.git-version").version("0.12.2")
+  id 'org.jetbrains.kotlin.jvm' version '1.5.30'
+}
+
+spinnakerBundle {
+  pluginId = "Liquibase.PreconfiguredJobPlugin"
+  description = "A Liquibase plugin that executes changesets."
+  provider = "https://github.com/$pluginOwner"
+  version = rootProject.version
+}
+
+version = "0.0.5"
+
+subprojects {
+  group = "org.liquibase.spinnaker.plugin"
+  version = rootProject.version
+}
+repositories {
+  mavenCentral()
+}
+dependencies {
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+}
+compileKotlin {
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}
+compileTestKotlin {
+  kotlinOptions {
+    jvmTarget = "1.8"
+  }
+}

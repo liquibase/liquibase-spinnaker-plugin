@@ -1,0 +1,111 @@
+label: Liquibase
+type: LiquibasePlugin
+description: Execute liquibase changesets
+cloudProvider: kubernetes
+account: spinnaker
+credentials: spinnaker
+application: liquibase
+waitForCompletion: true
+parameters:
+  - name: LIQUIBASE_COMMAND
+    label: Liquibase Command
+    description: Liquibase command to run
+    mapping: manifest.spec.template.spec.containers[0].args[0].value
+    defaultValue: >-
+      liquibase --classpath=/workspace/
+      --changeLogFile=samplechangelog.sql
+      --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
+      status --verbose &&  echo "======COMPLETED liquibase status
+      =========" && liquibase --classpath=/workspace/
+      --changeLogFile=samplechangelog.sql
+      --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
+      validate  && echo "======COMPLETED liquibase validate ========="
+      && liquibase --classpath=/workspace/
+      --changeLogFile=samplechangelog.sql
+      --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
+      update &&  echo "======COMPLETED liquibase update =========" &&
+      liquibase --classpath=/workspace/
+      --changeLogFile=samplechangelog.sql
+      --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
+      history  &&  echo "======COMPLETED liquibase history ========="
+  - name: LIQUIBASE_JAVA_OPTS
+    label: Java Opts for Liquibase Command
+    description: JAVA_OPTS is an environment variable that you can set to pass custom settings to the Java Virtual Machine (JVM) that runs Liquibase
+    mapping: manifest.spec.template.spec.containers[0].env[0].value
+    defaultValue: >-
+      -Djava.security.krb5.conf=/workspace/examples/krb5.conf
+      -Doracle.net.kerberos5_cc_name=/workspace/examples/krb5cc
+      -Dsun.security.krb5.debug=true
+      -Doracle.net.kerberos5_mutual_authentication=true
+      -Doracle.net.authentication_services=KERBEROS5
+      image: 'index.docker.io/liquibase/liquibase:latest'
+  - name: LIQUIBASE_HOST_NAME
+    label: Liquibase Target Host Name
+    description: Host Name for Liquibase Target
+    mapping: manifest.spec.template.spec.hostAliases[0].hostnames[0].value
+    defaultValue: lb-cs.datical.net
+  - name: LIQUIBASE_HOST_IP
+    label: Liquibase Target Host IP Address
+    description: IP Address for Liquibase Target
+    mapping: manifest.spec.template.spec.hostAliases[0].ip.value
+    defaultValue: 172.30.1.13
+  - name: CHANGELOG_REPO
+    label: Git Repository for Changelog
+    description: URI for Git Repository that contains Liquibase changelog
+    mapping: manifest.spec.template.spec.initContainers[0].command.value
+    defaultValue: https://github.com/adeelmalik78/lb-kerberos-spinnaker.git
+  - name: CHANGELOG_BRANCH
+    label: Git Branch for Changelog
+    description: Name of Git Branch for Git Repository that contains Liquibase changelog
+    mapping: manifest.spec.template.spec.initContainers[0].command.value
+    defaultValue: main
+
+manifest:
+  apiVersion: batch/v1
+  kind: Job
+  metadata:
+    name: liquibase-runner-100
+  spec:
+    template:
+      spec:
+        containers:
+          - args:
+              - sh
+              - '-c'
+              - "$(LIQUIBASE_COMMAND)"
+
+            env:
+              - name: JAVA_OPTS
+                value: "$(LIQUIBASE_JAVA_OPTS)"
+            name: liquibase
+            volumeMounts:
+              - mountPath: /workspace
+                name: workspace
+              - mountPath: /workspace/examples
+                name: etc
+        hostAliases:
+          - hostnames:
+              - "$(LIQUIBASE_HOST_NAME)"
+            ip: "$(LIQUIBASE_HOST_IP)"
+        initContainers:
+          - command:
+              - git
+              - clone
+              - '--single-branch'
+              - '--branch'
+              - "$(CHANGELOG_BRANCH)"
+              - "$(CHANGELOG_REPO)"
+              - /workspace
+            image: alpine/git
+            name: git
+            volumeMounts:
+              - mountPath: /workspace
+                name: workspace
+        restartPolicy: Never
+        volumes:
+          - emptyDir: {}
+            name: workspace
+          - hostPath:
+              path: /etc
+            name: etc
+    ttlSecondsAfterFinished: 60
