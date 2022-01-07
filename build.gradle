@@ -19,7 +19,7 @@ spinnakerBundle {
   version = rootProject.version
 }
 
-version = "0.0.14"
+version = "0.0.15"
 
 subprojects {
   group = "org.liquibase.spinnaker.plugin"
