@@ -23,6 +23,8 @@ if [[ -z "$CHANGELOG_BRANCH" ]]; then
 fi
 
 echo "$LB_HOST_IP $LB_HOST_NAME" >> /etc/hosts 2>&1
+mkdir /workspace
+chown liquibase:liquibase /workspace
 sudo -u liquibase git clone --quiet --single-branch --branch $CHANGELOG_BRANCH $CHANGELOG_REPO /workspace
 cd /workspace
 

@@ -47,11 +47,6 @@ manifest:
                   value: https://github.com/adeelmalik78/lb-kerberos-spinnaker.git
                 - name: CHANGELOG_BRANCH
                   value: main
-            volumeMounts:
-              - mountPath: /workspace
-                name: workspace
-              - mountPath: /workspace/examples
-                name: etc
         restartPolicy: Never
         volumes:
           - emptyDir: {}
