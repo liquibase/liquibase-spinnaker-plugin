@@ -18,8 +18,7 @@ manifest:
         containers:
           - name: liquibase
             image: index.docker.io/mcred/lbspin:latest
-            args:
-                - >-
+            command: >-
                   liquibase --classpath=/workspace/
                   --changeLogFile=samplechangelog.sql
                   --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
@@ -48,10 +47,4 @@ manifest:
                 - name: CHANGELOG_BRANCH
                   value: main
         restartPolicy: Never
-        volumes:
-          - emptyDir: {}
-            name: workspace
-          - hostPath:
-              path: /etc
-            name: etc
     ttlSecondsAfterFinished: 60
