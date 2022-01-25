@@ -18,23 +18,7 @@ manifest:
         containers:
           - name: liquibase
             image: index.docker.io/mcred/lbspin:latest
-            command: >-
-                  liquibase --classpath=/workspace/
-                  --changeLogFile=samplechangelog.sql
-                  --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
-                  status --verbose &&  echo "======COMPLETED liquibase status
-                  =========" && liquibase --classpath=/workspace/
-                  --changeLogFile=samplechangelog.sql
-                  --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
-                  validate  && echo "======COMPLETED liquibase validate ========="
-                  && liquibase --classpath=/workspace/
-                  --changeLogFile=samplechangelog.sql
-                  --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
-                  update &&  echo "======COMPLETED liquibase update =========" &&
-                  liquibase --classpath=/workspace/
-                  --changeLogFile=samplechangelog.sql
-                  --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
-                  history  &&  echo "======COMPLETED liquibase history ========="
+            command: ["liquibase --classpath=/workspace/ --changeLogFile=samplechangelog.sql --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL status --verbose &&  echo \"======COMPLETED liquibase status =========\" && liquibase --classpath=/workspace/ --changeLogFile=samplechangelog.sql --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL validate  && echo \"======COMPLETED liquibase validate =========\" && liquibase --classpath=/workspace/ --changeLogFile=samplechangelog.sql --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL update &&  echo \"======COMPLETED liquibase update =========\" && liquibase --classpath=/workspace/ --changeLogFile=samplechangelog.sql --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL history  &&  echo \"======COMPLETED liquibase history =========\""]
             env:
                 - name: JAVA_OPTS
                   value: -Djava.security.krb5.conf=/workspace/examples/krb5.conf -Doracle.net.kerberos5_cc_name=/workspace/examples/krb5cc -Dsun.security.krb5.debug=true -Doracle.net.kerberos5_mutual_authentication=true -Doracle.net.authentication_services=KERBEROS5
