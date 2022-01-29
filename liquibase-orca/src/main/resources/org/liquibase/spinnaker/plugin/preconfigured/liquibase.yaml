@@ -6,6 +6,46 @@ account: spinnaker
 credentials: spinnaker
 application: liquibase
 waitForCompletion: true
+parameters:
+  - name: LB_COMMAND
+    label: Liquibase Command
+    description: Liquibase command to run
+    mapping: manifest.spec.template.spec.containers[0].env[0].value
+    defaultValue: >-
+      liquibase --classpath=/workspace/
+      --changeLogFile=samplechangelog.sql
+      --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL
+      status --verbose
+  - name: JAVA_OPTS
+    label: Java Opts for Liquibase Command
+    description: JAVA_OPTS is an environment variable that you can set to pass custom settings to the Java Virtual Machine (JVM) that runs Liquibase
+    mapping: manifest.spec.template.spec.containers[0].env[1].value
+    defaultValue: >-
+      -Djava.security.krb5.conf=/etc/krb5.conf 
+      -Doracle.net.kerberos5_cc_name=/etc/krb5cc 
+      -Dsun.security.krb5.debug=true 
+      -Doracle.net.kerberos5_mutual_authentication=true 
+      -Doracle.net.authentication_services=KERBEROS5
+  - name: LB_HOST_NAME
+    label: Liquibase Target Host Name
+    description: Host Name for Liquibase Target
+    mapping: manifest.spec.template.spec.containers[0].env[2].value
+    defaultValue: lb-cs.datical.net
+  - name: LB_HOST_IP
+    label: Liquibase Target Host IP Address
+    description: IP Address for Liquibase Target
+    mapping: manifest.spec.template.spec.containers[0].env[3].value
+    defaultValue: 172.30.1.13
+  - name: CHANGELOG_REPO
+    label: Git Repository for Changelog
+    description: URI for Git Repository that contains Liquibase changelog
+    mapping: manifest.spec.template.spec.containers[0].env[4].value
+    defaultValue: https://github.com/adeelmalik78/lb-kerberos-spinnaker.git
+  - name: CHANGELOG_BRANCH
+    label: Git Branch for Changelog
+    description: Name of Git Branch for Git Repository that contains Liquibase changelog
+    mapping: manifest.spec.template.spec.containers[0].env[5].value
+    defaultValue: main
 
 manifest:
   apiVersion: batch/v1
@@ -18,17 +58,45 @@ manifest:
         containers:
           - name: liquibase
             image: index.docker.io/mcred/lbspin:latest
-            command: ["liquibase --classpath=/workspace/ --changeLogFile=samplechangelog.sql --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL status --verbose &&  echo \"======COMPLETED liquibase status =========\" && liquibase --classpath=/workspace/ --changeLogFile=samplechangelog.sql --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL validate  && echo \"======COMPLETED liquibase validate =========\" && liquibase --classpath=/workspace/ --changeLogFile=samplechangelog.sql --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL update &&  echo \"======COMPLETED liquibase update =========\" && liquibase --classpath=/workspace/ --changeLogFile=samplechangelog.sql --url=jdbc:oracle:thin:app_schema/@oracle-kerberos.cz1j1vh9uvuo.us-east-1.rds.amazonaws.com:1521/ORCL history  &&  echo \"======COMPLETED liquibase history =========\""]
+            args: [$(LB_COMMAND)]
             env:
-                - name: JAVA_OPTS
-                  value: -Djava.security.krb5.conf=/workspace/examples/krb5.conf -Doracle.net.kerberos5_cc_name=/workspace/examples/krb5cc -Dsun.security.krb5.debug=true -Doracle.net.kerberos5_mutual_authentication=true -Doracle.net.authentication_services=KERBEROS5
-                - name: LB_HOST_NAME
-                  value: lb-cs.datical.net
-                - name: LB_HOST_IP
-                  value: 172.30.1.13
-                - name: CHANGELOG_REPO
-                  value: https://github.com/adeelmalik78/lb-kerberos-spinnaker.git
-                - name: CHANGELOG_BRANCH
-                  value: main
+              - name: LB_COMMAND
+                value: placeholder
+              - name: JAVA_OPTS
+                value: placeholder
+              - name: LB_HOST_NAME
+                value: placeholder
+              - name: LB_HOST_IP
+                value: placeholder
+              - name: CHANGELOG_REPO
+                value: placeholder
+              - name: CHANGELOG_BRANCH
+                value: placeholder
+            volumeMounts:
+              - mountPath: /etc/krb5.conf
+                name: krb5-conf
+              - mountPath: /etc/krb5_mssql.conf
+                name: krb5-mssql-conf
+              - mountPath: /etc/krb5cc
+                name: krb5cc
+              - mountPath: /etc/krb5kdc
+                name: krb5kdc
         restartPolicy: Never
+        volumes:
+          - name: krb5-conf
+            hostPath:
+              path: /etc/krb5.conf
+              type: File
+          - name: krb5-mssql-conf
+            hostPath:
+              path: /etc/krb5_mssql.conf
+              type: File
+          - name: krb5cc
+            hostPath:
+              path: /etc/krb5cc
+              type: File
+          - name: krb5kdc
+            hostPath:
+              path: /etc/krb5kdc
+              type: Directory
     ttlSecondsAfterFinished: 60

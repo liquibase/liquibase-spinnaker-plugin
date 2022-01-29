@@ -28,4 +28,5 @@ chown liquibase:liquibase /workspace
 sudo -u liquibase git clone --quiet --single-branch --branch $CHANGELOG_BRANCH $CHANGELOG_REPO /workspace
 cd /workspace
 
-/docker-entrypoint.sh "$@"
+read -a lbcmd <<< $1
+/docker-entrypoint.sh "${lbcmd[@]}"
