@@ -1,0 +1,6 @@
+[
+  {
+    "id": "LiquibasePluginsRepo",
+    "url": "https://raw.githubusercontent.com/mcred/test-spinnaker-plugin/main/plugins.json"
+  }
+]

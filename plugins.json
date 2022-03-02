@@ -1,0 +1,20 @@
+[
+  {
+    "id": "Liquibase.PreconfiguredJobPlugin",
+    "description": "A Liquibase plugin that executes changesets.",
+    "provider": "https://github.com/liquibase",
+    "releases": [
+      {
+        "version": "0.0.36",
+        "date": "2022-01-28T22:36:40.540093Z",
+        "requires": "orca>=0.0.0",
+        "sha512sum": "1d37198d063049285f857dfe9fd80f5575e6ce9cdc951db23290ed9412761fba9340f33b060b87c7f0e1ecb0524950422506b792dfa8d8d4fcc8865f3c9e749a",
+        "url": "https://github.com/mcred/test-spinnaker-plugin/releases/download/v0.0.36/spinnaker-preconfigured-job-plugin-0.0.36.zip",
+        "preferred": false,
+        "compatibility": [
+
+        ]
+      }
+    ]
+  }
+]
