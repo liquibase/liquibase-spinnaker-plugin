@@ -27,13 +27,13 @@ parameters:
       -Doracle.net.kerberos5_mutual_authentication=true 
       -Doracle.net.authentication_services=KERBEROS5
   - name: LB_HOST_NAME
-    label: Liquibase Target Host Name
-    description: Host Name for Liquibase Target
+    label: Active Directory Host Name
+    description: Host Name for Active Directory
     mapping: manifest.spec.template.spec.containers[0].env[2].value
     defaultValue: lb-cs.datical.net
   - name: LB_HOST_IP
-    label: Liquibase Target Host IP Address
-    description: IP Address for Liquibase Target
+    label: Active Directory Host IP Address
+    description: IP Address for Active Directory
     mapping: manifest.spec.template.spec.containers[0].env[3].value
     defaultValue: 172.30.1.13
   - name: CHANGELOG_REPO
@@ -51,7 +51,7 @@ manifest:
   apiVersion: batch/v1
   kind: Job
   metadata:
-    name: liquibase-runner-100
+    generateName: liquibase-runner
   spec:
     template:
       spec:
