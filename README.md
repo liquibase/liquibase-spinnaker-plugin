@@ -14,7 +14,7 @@ Spinnaker plugin for configuring and running Liquibase jobs.
       repositories:
         spinnaker-plugins-repository:
           id: spinnaker-plugins-repository
-          url: https://raw.githubusercontent.com/mcred/test-spinnaker-plugin/master/plugins.json
+          url: https://raw.githubusercontent.com/liquibase/liquibase-spinnaker-plugin/master/plugins.json
 ```
 
 

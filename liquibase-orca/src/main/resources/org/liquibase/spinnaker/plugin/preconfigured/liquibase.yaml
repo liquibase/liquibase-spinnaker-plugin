@@ -57,7 +57,7 @@ manifest:
       spec:
         containers:
           - name: liquibase
-            image: index.docker.io/mcred/lbspin:latest
+            image: index.docker.io/liquibase/liquibase-spinnaker-plugin:latest
             args: [$(LB_COMMAND)]
             env:
               - name: LB_COMMAND
