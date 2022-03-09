@@ -5,11 +5,11 @@
     "provider": "https://github.com/liquibase",
     "releases": [
       {
-        "version": "0.0.36",
-        "date": "2022-01-28T22:36:40.540093Z",
+        "version": "0.0.37",
+        "date": "2022-03-09T18:38:09.703575Z",
         "requires": "orca>=0.0.0",
-        "sha512sum": "1d37198d063049285f857dfe9fd80f5575e6ce9cdc951db23290ed9412761fba9340f33b060b87c7f0e1ecb0524950422506b792dfa8d8d4fcc8865f3c9e749a",
-        "url": "https://github.com/liquibase/liquibase-spinnaker-plugin/releases/download/v0.0.36/spinnaker-preconfigured-job-plugin-0.0.36.zip",
+        "sha512sum": "e616ad295cbf7946d5dbc3b4c7f8fab44a31b379ca7b7c74a8e459ea030d5d568d2b6db7d90bd6ca23f6bdb190c575a82dcd60b981033f9ffc7903fbddf0c866",
+        "url": "https://github.com/liquibase/liquibase-spinnaker-plugin/releases/download/v0.0.37/spinnaker-preconfigured-job-plugin-0.0.37.zip",
         "preferred": false,
         "compatibility": [
 
