@@ -32,3 +32,8 @@ Defines all the environment variables passed to container, the container image t
 * upload zip from `./build/distributions/` to artifactory
 * update `plugins.json` with contents of `./build/distributions/plugin-info.json`
 * add `url` attribute with address of zip file in artifactory
+
+## License
+View [license information](https://github.com/liquibase/liquibase-spinnaker-plugin/blob/master/LICENSE.txt) for the software contained in this image.
+
+LIQUIBASE is a registered trademark of Liquibase Inc.
