@@ -14,7 +14,7 @@ Spinnaker plugin for configuring and running Liquibase jobs.
       repositories:
         spinnaker-plugins-repository:
           id: spinnaker-plugins-repository
-          url: https://raw.githubusercontent.com/liquibase/liquibase-spinnaker-plugin/master/plugins.json
+          url: https://raw.githubusercontent.com/liquibase/liquibase-spinnaker-plugin/main/plugins.json
 ```
 
 
@@ -34,6 +34,6 @@ Defines all the environment variables passed to container, the container image t
 * add `url` attribute with address of zip file in artifactory
 
 ## License
-View [license information](https://github.com/liquibase/liquibase-spinnaker-plugin/blob/master/LICENSE.txt) for the software contained in this image.
+View [license information](https://github.com/liquibase/liquibase-spinnaker-plugin/blob/main/LICENSE.txt) for the software contained in this image.
 
 LIQUIBASE is a registered trademark of Liquibase Inc.

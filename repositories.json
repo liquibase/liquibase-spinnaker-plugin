@@ -1,6 +1,6 @@
 [
   {
     "id": "LiquibasePluginsRepo",
-    "url": "https://raw.githubusercontent.com/liquibase/liquibase-spinnaker-plugin/master/plugins.json"
+    "url": "https://raw.githubusercontent.com/liquibase/liquibase-spinnaker-plugin/main/plugins.json"
   }
 ]
